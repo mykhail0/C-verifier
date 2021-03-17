@@ -98,9 +98,6 @@ main {
   background-color: var(--project-tree);
   overflow: auto;
   resize: horizontal;
-
-  /* dependant on menu height */
-  /*max-height: calc(100vh - 20px);*/
   max-width: 30vw;
   border-right: 1px solid var(--grid-border);
 }
@@ -110,9 +107,6 @@ main {
   background-color: var(--code);
   overflow: auto;
   resize: horizontal;
-
-  /* dependant on menu height and tabs height */
-  /*max-height: calc(80vh - 20px);*/
   max-width: 70vw;
 }
 
@@ -172,27 +166,24 @@ input:checked + label {
   border-bottom: 1px solid transparent;
 }
 
-@media (pointer:coarse) {
+@media (pointer: coarse) {
   main {
     display: grid;
     grid-template:
       "project code program" calc(80vh - 20px)
       "project tabs tabs" 20vh / 25vw 50vw 25vw;
   }
+
   .code {
     grid-area: code;
     background-color: var(--code);
     resize: none;
-    max-width: 100%
+    max-width: 100%;
   }
-  .program-element {
-  }
+
   .project-tree {
     grid-area: project;
     background-color: var(--project-tree);
-
-    /* dependant on menu height */
-    /*max-height: calc(100vh - 20px);*/
     max-width: 100%;
     border-right: 1px solid var(--grid-border);
   }
@@ -205,12 +196,15 @@ input:checked + label {
       "code" calc(80vh - 20px)
       "tabs" 20vh / auto;
   }
+
   .program-element {
     display: none;
   }
+
   .project-tree {
     display: none;
   }
+
   .code {
     grid-area: code;
     background-color: var(--code);
