@@ -177,17 +177,13 @@ input:checked + label {
   }
 
   .code {
-    grid-area: code;
-    background-color: var(--code);
     resize: none;
     max-width: 100%;
   }
 
   .project-tree {
-    grid-area: project;
-    background-color: var(--project-tree);
+    resize: none;
     max-width: 100%;
-    border-right: 1px solid var(--grid-border);
   }
 }
 
@@ -195,22 +191,27 @@ input:checked + label {
   main {
     display: grid;
     grid-template:
-      "code" calc(80vh - 20px)
-      "tabs" 20vh / auto;
-  }
-
-  .program-element {
-    display: none;
+      "code" auto
+      "project" min-content
+      "program" min-content
+      "tabs" min-content;
   }
 
   .project-tree {
-    display: none;
+    resize: none;
+    max-width: 100%;
+    border-right: none;
   }
 
   .code {
-    grid-area: code;
-    background-color: var(--code);
     resize: none;
     max-width: 100%;
+    min-height: 70vh;
+  }
+
+  .program-element {
+    max-width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--grid-border);
   }
 }
