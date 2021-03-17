@@ -193,7 +193,26 @@ input:checked + label {
   }
 }
 
-/* TODO */
 @media (pointer:coarse) {
-    /* code without resize */
+  main {
+    display: grid;
+    grid-template:
+      "code" calc(80vh - 20px)
+      "tabs" 20vh / auto;
+  }
+  .code {
+    grid-area: code;
+    background-color: var(--code);
+    resize: none;
+    max-width: 50vw;
+  }
+  .project-tree {
+    grid-area: project;
+    background-color: var(--project-tree);
+
+    /* dependant on menu height */
+    /*max-height: calc(100vh - 20px);*/
+    max-width: 25vw;
+    border-right: 1px solid var(--grid-border);
+  }
 }
