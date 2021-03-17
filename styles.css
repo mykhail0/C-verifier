@@ -172,9 +172,28 @@ input:checked + label {
   border-bottom: 1px solid transparent;
 }
 
+@media screen and (max-width: 800px) {
+  main {
+    display: grid;
+    grid-template:
+      "code" calc(80vh - 20px)
+      "tabs" 20vh / auto;
+  }
+  .program-element {
+    display: none;
+  }
+  .project-tree {
+    display: none;
+  }
+  .code {
+    grid-area: code;
+    background-color: var(--code);
+    resize: none;
+    max-width: 100%;
+  }
+}
+
 /* TODO */
 @media (pointer:coarse) {
     /* code without resize */
 }
-
-/* media code for small screens */
