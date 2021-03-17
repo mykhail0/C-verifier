@@ -15,7 +15,10 @@
   --tab-link: #f0f0f0;
   --tab-border: #111;
 
-  /* Dark color scheme.
+}
+
+.dark {
+  /* Dark color scheme. */
   --color: white;
   --grid-border: #999;
   --menu: #111;
@@ -30,7 +33,6 @@
   --tabs: #111;
   --tab-link: #656565;
   --tab-border: #fff;
-  */
 }
 
 * {
