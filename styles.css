@@ -172,27 +172,6 @@ input:checked + label {
   border-bottom: 1px solid transparent;
 }
 
-@media screen and (max-width: 800px) {
-  main {
-    display: grid;
-    grid-template:
-      "code" calc(80vh - 20px)
-      "tabs" 20vh / auto;
-  }
-  .program-element {
-    display: none;
-  }
-  .project-tree {
-    display: none;
-  }
-  .code {
-    grid-area: code;
-    background-color: var(--code);
-    resize: none;
-    max-width: 100%;
-  }
-}
-
 @media (pointer:coarse) {
   main {
     display: grid;
@@ -216,5 +195,26 @@ input:checked + label {
     /*max-height: calc(100vh - 20px);*/
     max-width: 100%;
     border-right: 1px solid var(--grid-border);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  main {
+    display: grid;
+    grid-template:
+      "code" calc(80vh - 20px)
+      "tabs" 20vh / auto;
+  }
+  .program-element {
+    display: none;
+  }
+  .project-tree {
+    display: none;
+  }
+  .code {
+    grid-area: code;
+    background-color: var(--code);
+    resize: none;
+    max-width: 100%;
   }
 }
