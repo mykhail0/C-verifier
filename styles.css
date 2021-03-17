@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+
+:root {
+  /* Light color scheme.
+  --menu: #111111;
+  --menu-element: #656565;
+  --code: #111111;
+  --project-tree: #111111;
+  --program-element: #111111;
+  --tab-view: #111111;
+  --tab-data: #111111;
+  */
+
+  /* Dark color scheme. */
+  --menu: #111111;
+  --menu-element: #656565;
+  --menu-hover: #f1f1f1;
+  --menu-el-content: #656565;
+  --menu-el-content-hover: #f1f1f1;
+  --code: #111111;
+  --project-tree: #111111;
+  --program-element: #111111;
+  --tab-view: #111111;
+  --tab-data: #111111;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 20px auto;
+  width: 100vw;
+  height: 100vh;
+}
+
+.menu {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 1rem;
+  justify-content: start;
+  background-color: var(--menu);
+}
+
+.menu-element {
+  background-color: var(--menu-element);
+  cursor: pointer;
+}
+
+.menu-el-content {
+  background-color: var(--menu-el-content);
+  display: none;
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.menu-el-content a {
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.menu-el-content a:hover {
+  background-color: var(--menu-el-content-hover);
+}
+
+.menu-element:hover {
+  background-color: var(--menu-hover);
+}
+
+.menu-element:hover .menu-el-content {
+  display: block;
+}
+
+main {
+  display: grid;
+  grid-template:
+    "project code program" auto
+    "project tabs tabs" 100px / auto auto 1fr;
+}
+
+.project-tree {
+  grid-area: project;
+  background-color: var(--project-tree);
+  overflow: auto;
+  resize: horizontal;
+  /* dependant on menu height */
+  max-height: calc(100vh - 20px);
+  max-width: 30vw;
+}
+
+.code {
+  grid-area: code;
+  background-color: var(--code);
+  overflow: auto;
+  resize: horizontal;
+  /* dependant on menu height and tabs height */
+  max-height: calc(100vh - 120px);
+  max-width: 70vw;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.program-element {
+  background-color: var(--program-element);
+  overflow: auto;
+}
+
+.tabs {
+  grid-area: tabs;
+  overflow: auto;
+  display: grid;
+}
+
+.tab-view {
+  background-color: var(--tab-view);
+}
+
+.tab-data {
+  background-color: var(--tab-data);
+}
