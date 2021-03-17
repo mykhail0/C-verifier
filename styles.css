@@ -172,12 +172,9 @@ input:checked + label {
   border-bottom: 1px solid transparent;
 }
 
-@media (pointer: coarse) {
-  color: green;
+/* TODO */
+@media (pointer:coarse) {
+    /* code without resize */
 }
 
-/*
-@media screen and (max-width: 600px) {
-  color: green;
-}
-*/
+/* media code for small screens */
