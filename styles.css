@@ -89,7 +89,7 @@
 main {
   display: grid;
   grid-template:
-    "project code program" auto
+    "project code program" calc(80vh - 20px)
     "project tabs tabs" 20vh / auto auto 1fr;
 }
 
@@ -100,7 +100,7 @@ main {
   resize: horizontal;
 
   /* dependant on menu height */
-  max-height: calc(100vh - 20px);
+  /*max-height: calc(100vh - 20px);*/
   max-width: 30vw;
   border-right: 1px solid var(--grid-border);
 }
@@ -112,7 +112,7 @@ main {
   resize: horizontal;
 
   /* dependant on menu height and tabs height */
-  max-height: calc(80vh - 20px);
+  /*max-height: calc(80vh - 20px);*/
   max-width: 70vw;
   font-family: "Courier New", Courier, monospace;
 }
