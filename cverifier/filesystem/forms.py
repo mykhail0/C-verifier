@@ -5,7 +5,7 @@ from .models import Directory, File
 class DirectoryForm(ModelForm):
     class Meta:
         model = Directory
-        fields = ['name', 'desc']
+        fields = ['name', 'parent', 'desc']
 
     def __init__(self, *args, **kwargs):
         owner = kwargs.pop('owner')

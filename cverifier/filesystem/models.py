@@ -8,7 +8,6 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
-
 class User(AbstractBaseUser):
     login = models.CharField(max_length=40, unique=True)
     USERNAME_FIELD = 'login'
@@ -18,6 +17,7 @@ class User(AbstractBaseUser):
 
 class Directory(models.Model):
     #owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=256)
     desc = models.TextField('description', blank=True)
     creation_date = models.DateTimeField('creation date');

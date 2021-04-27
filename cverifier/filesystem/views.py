@@ -8,6 +8,7 @@ from .models import Directory, File
 from .forms import DirectoryForm, FileForm
 
 def index(request):
+    #directories = Directory.objects.filter(parent__isnull=True)
     directories = Directory.objects.all
     files = File.objects.all
     #directories = Directory.objects.order_by('name')

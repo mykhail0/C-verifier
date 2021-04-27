@@ -39,13 +39,15 @@
 
   <main>
     <div class="project-tree">
-      {% if directories %}
-        <ul>
-          {% for directory in directories %}
-            <li><p>{{ directory.name }}</p></li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+    {% if directories %}
+    {% for dir in directories %}
+      <div class="directory">{{ dir.name }}
+      {% for file in dir.file_set.all %}
+        <div class="file">{{ file.name }}</div>
+      {% endfor %}
+      </div>
+    {% endfor %}
+    {% endif %}
     </div>
 
     <div class="code">

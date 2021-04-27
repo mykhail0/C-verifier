@@ -104,6 +104,15 @@ main {
   border-right: 1px solid var(--grid-border);
 }
 
+.directory {
+  color: red
+}
+
+.file {
+  color: yellow;
+  margin-left: 25px
+}
+
 .code {
   grid-area: code;
   background-color: var(--code);
