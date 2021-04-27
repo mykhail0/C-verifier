@@ -23,7 +23,7 @@ class Directory(models.Model):
     creation_date = models.DateTimeField('creation date');
     availability_flag = models.BooleanField()
     def get_absolute_url(self):
-        return reverse('filesystem:')
+        return reverse('filesystem:index')
 
 
 class HasSection(models.Model):
@@ -45,6 +45,8 @@ class File(HasSection):
     desc = models.TextField('description', blank=True)
     creation_date = models.DateTimeField('creation date');
     availability_flag = models.BooleanField()
+    def get_absolute_url(self):
+        return reverse('filesystem:index')
 
 
 class SectionCategory(models.Model):
