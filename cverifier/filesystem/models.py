@@ -18,13 +18,13 @@ class User(AbstractBaseUser):
 
 class Directory(models.Model):
     #owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=256)
     desc = models.TextField('description', blank=True)
     creation_date = models.DateTimeField('creation date');
     availability_flag = models.BooleanField()
     def get_my_path(self):
-        return settings.MEDIA_ROOT if self.parent is None else Directory.objects.get(pk=self.parent.pk).get_my_path() + self.name + '/'
+        return (settings.MEDIA_ROOT if self.parent is None else Directory.objects.get(pk=self.parent.pk).get_my_path()) + self.name + '/'
     def get_absolute_url(self):
         return reverse('filesystem:index')
     def __str__(self):
@@ -43,7 +43,7 @@ class FileSection(HasSection):
 
 
 def upload_path(instance, filename):
-    return Directory.objects.get(pk=instance.directory.pk).get_my_path()
+    return Directory.objects.get(pk=instance.directory.pk).get_my_path() + filename
 
 
 class File(HasSection):
