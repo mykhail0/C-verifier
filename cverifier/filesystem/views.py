@@ -32,7 +32,6 @@ class DirectoryCreateView(CreateView):
         form.instance.availability_flag = True if x is None else x
         return super().form_valid(form)
 
-    # idk jakas magia TODO
     def get_form_kwargs(self):
         kwargs = super(DirectoryCreateView, self).get_form_kwargs()
         kwargs['owner'] = self.request.user
@@ -50,7 +49,6 @@ class FileCreateView(CreateView):
         form.instance.availability_flag = True if x is None else x
         return super().form_valid(form)
 
-    # idk jakas magia TODO
     def get_form_kwargs(self):
         kwargs = super(FileCreateView, self).get_form_kwargs()
         kwargs['owner'] = self.request.user

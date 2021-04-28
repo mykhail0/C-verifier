@@ -7,12 +7,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from django.conf import settings
+
 
 class User(AbstractBaseUser):
     login = models.CharField(max_length=40, unique=True)
     USERNAME_FIELD = 'login'
     name = models.CharField(max_length=256)
-    # TODO password idk
 
 
 class Directory(models.Model):
@@ -22,8 +23,12 @@ class Directory(models.Model):
     desc = models.TextField('description', blank=True)
     creation_date = models.DateTimeField('creation date');
     availability_flag = models.BooleanField()
+    def get_my_path(self):
+        return settings.MEDIA_ROOT if self.parent is None else Directory.objects.get(pk=self.parent.pk).get_my_path() + self.name + '/'
     def get_absolute_url(self):
         return reverse('filesystem:index')
+    def __str__(self):
+        return self.name
 
 
 class HasSection(models.Model):
@@ -37,16 +42,22 @@ class FileSection(HasSection):
     creation_date = models.DateTimeField('creation date');
 
 
+def upload_path(instance, filename):
+    return Directory.objects.get(pk=instance.directory.pk).get_my_path()
+
+
 class File(HasSection):
     directory = models.ForeignKey(Directory, on_delete=models.CASCADE)
-    #owner = models.ForeignKey(User, on_delete=models.CASCADE) # TODO owner of this should be as in directory idk
+    #owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=256)
-    file_data = models.FileField('file')
+    file_data = models.FileField('file', upload_to=upload_path)
     desc = models.TextField('description', blank=True)
     creation_date = models.DateTimeField('creation date');
     availability_flag = models.BooleanField()
     def get_absolute_url(self):
         return reverse('filesystem:index')
+    def __str__(self):
+        return self.name
 
 
 class SectionCategory(models.Model):
