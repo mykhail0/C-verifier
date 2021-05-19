@@ -14,7 +14,7 @@ class DirectoryForm(ModelForm):
 class FileForm(ModelForm):
     class Meta:
         model = File
-        fields = ['name', 'directory', 'file_data', 'desc']
+        fields = ['name', 'directory', 'file_cont', 'desc']
 
     def __init__(self, *args, **kwargs):
         owner = kwargs.pop('owner')

@@ -102,15 +102,17 @@ main {
   resize: horizontal;
   max-width: 30vw;
   border-right: 1px solid var(--grid-border);
+  margin-left: 20px;
 }
 
 .directory {
-  color: red
+  color: red;
+  margin-left: 15px;
 }
 
 .file {
   color: yellow;
-  margin-left: 25px
+  margin-left: 15px
 }
 
 .code {

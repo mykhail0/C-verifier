@@ -39,17 +39,13 @@
 
   <main>
     <div class="project-tree">
+    <ul>
     {% if directories %}
     {% for dir in directories %}
-      <div class="directory">{{ dir.name }}
-      {% for file in dir.file_set.all %}
-        <div class="file">
-        <a href="{% url 'filesystem:detail' file.pk %}">{{ file.name }}</a>
-        </div>
-      {% endfor %}
-      </div>
+      {% include 'filesystem/tree_dir_template.html' %}
     {% endfor %}
     {% endif %}
+    </ul>
     </div>
 
     <div class="code">
@@ -57,7 +53,6 @@
     int main() {
     printf(&quot;Hello World!\n&quot;);
     }" spellcheck="false" autofocus>
-        {% for line in contents %}{{ line }}{% endfor %}
       </textarea>
     </div>
 

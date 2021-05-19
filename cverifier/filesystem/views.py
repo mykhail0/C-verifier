@@ -1,16 +1,15 @@
 import os
 
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.views.generic import CreateView
+from django.shortcuts import render
+from django.views.generic import CreateView, DeleteView
 from django.utils import timezone
+from django.urls import reverse
 
 from .models import Directory, File
 from .forms import DirectoryForm, FileForm
 
 def index(request):
-    directories = Directory.objects.all
+    directories = Directory.objects.filter(parent=None)
     files = File.objects.all
     context = {
         'directories': directories,
@@ -21,36 +20,35 @@ def index(request):
 
 
 def detail(request, pk):
-    file_to_print = File.objects.get(pk=pk)
-    contents = []
-    if file_to_print != None:
+    file_obj = File.objects.get(pk=pk)
+    file_content = []
+    if file_obj != None:
         try:
-            with file_to_print.file_data.open('r') as f:
-                contents = f.readlines()
+            with file_obj.file_cont.open('r') as f:
+                file_content = f.readlines()
         except:
             pass
 
-    directories = Directory.objects.all
+    directories = Directory.objects.filter(parent=None)
     files = File.objects.all
     context = {
         'directories': directories,
         'files': files,
-        'contents': contents,
-        'theme': 'root'
+        'file_content': file_content,
+        'theme': 'root',
+        'pk': pk
     }
-    return render(request, 'filesystem/index.html', context)
+    return render(request, 'filesystem/detail.html', context)
 
 
 class DirectoryCreateView(CreateView):
     form_class = DirectoryForm
-    template_name = 'filesystem/directory_form.html'
+    template_name = 'filesystem/form.html'
 
     def form_valid(self, form):
-        # form.instance.owner = self.request.user
         form.instance.creation_date = timezone.now()
         x = form.instance.availability_flag
         form.instance.availability_flag = True if x is None else x
-        print(form.instance.get_my_path())
         try:
             os.mkdir(form.instance.get_my_path())
         except:
@@ -63,12 +61,18 @@ class DirectoryCreateView(CreateView):
         return kwargs
 
 
+class DirectoryDeleteView(DeleteView):
+    model = Directory
+    template_name = 'filesystem/del_form.html'
+    def get_success_url(self):
+        return reverse('filesystem:index')
+
+
 class FileCreateView(CreateView):
     form_class = FileForm
-    template_name = 'filesystem/file_form.html'
+    template_name = 'filesystem/form.html'
 
     def form_valid(self, form):
-        # form.instance.owner = self.request.user
         form.instance.creation_date = timezone.now()
         x = form.instance.availability_flag
         form.instance.availability_flag = True if x is None else x
@@ -78,3 +82,9 @@ class FileCreateView(CreateView):
         kwargs = super(FileCreateView, self).get_form_kwargs()
         kwargs['owner'] = self.request.user
         return kwargs
+
+class FileDeleteView(DeleteView):
+    model = File
+    template_name = 'filesystem/del_form.html'
+    def get_success_url(self):
+        return reverse('filesystem:index')
