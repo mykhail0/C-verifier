@@ -34,13 +34,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'filesystem.apps.FilesystemConfig',
+    'verifier.apps.VerifierConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap_modal_forms'
 ]
 
 MIDDLEWARE = [
