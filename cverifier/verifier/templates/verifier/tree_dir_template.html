@@ -1,0 +1,34 @@
+<li class="directory" id="dir{{ dir.pk }}">
+  <form action="" method="post" id="d{{ dir.pk }}">
+    {% csrf_token %}
+  </form>
+  <label for="d{{ dir.pk }}">{{ dir.name }}</label>
+  <input type="submit" value="del" class="btn-sm" form="d{{ dir.pk }}">
+  <script>
+  $(document).ready(() => {deleteDir({{ dir.pk }});});
+  </script>
+  <ul>
+  {% for file in dir.file_set.all %}
+    <li class="file" id="file{{ file.pk }}">
+      <form action="" method="post" id="f{{ file.pk }}">
+        {% csrf_token %}
+      </form>
+      <label for="f{{ file.pk }}">{{ file.name }}</label>
+      <input type="submit" value="del" class="btn-sm" form="f{{ file.pk }}">
+      <script>
+      $(document).ready(() => {
+        loadFile({{ file.pk }});
+        deleteFile({{ file.pk }});
+      });
+      </script>
+    </li>
+  {% endfor %}
+  </ul>
+  <ul>
+  {% for ch in dir.directory_set.all %}
+    {% with dir=ch %}
+      {% include 'verifier/tree_dir_template.html' %}
+    {% endwith %}
+  {% endfor %}
+  </ul>
+</li>

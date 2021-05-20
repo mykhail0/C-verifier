@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+{% load static %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+<script src="{% static 'verifier/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script src="{% static 'verifier/script.js' %}" type="text/javascript"></script>
+
+{% block style %}
+{% endblock %}
+
+<link rel="icon" href="{% static 'verifier/images/c_icon.png' %}" type="image/x-icon">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="author" content="Mykhailo Shevchenko">
+<meta name="keywords" content="C, programming, verifier, invariant, invariants, ACSL, Frama-C, validator, validate, verify, check, prove">
+<meta name="description" content="An application for writing down and proving invariants for simple programs written in the C programming language">
+
+<title>C programs verifier</title>
+</head>
+<body>
+
+{% block content %}
+{% endblock content %}
+
+</body>
+
+</html>

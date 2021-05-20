@@ -1,0 +1,149 @@
+{% extends "verifier/base.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'verifier/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<script>
+$(document).ready(() => {
+
+    csrftoken = Cookies.get('csrftoken');
+
+    $("#add-dir").modalForm({
+        formURL: "{% url 'verifier:dirform' %}"
+    });
+
+    $("#add-file").modalForm({
+        formURL: "{% url 'verifier:fileform' %}"
+    });
+
+});
+
+function loadFile(n) {
+    $(document).on('click', '#file' + n, (e) => {
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url 'verifier:code' 1234 %}'.replace(/1234/, n.toString()),
+            data:
+            {
+                pk: n,
+                csrfmiddlewaretoken: csrftoken
+            },
+            success: (data) => {
+                $('.ver-code textarea:first').html(data.filecontent);
+            }
+        });
+    });
+}
+
+function deleteDir(n) {
+    $(document).on('submit', '#d' + n, (e) => {
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url 'verifier:delete_dir' 1234 %}'.replace(/1234/, n.toString()),
+            data:
+            {
+                pk: n,
+                csrfmiddlewaretoken: csrftoken
+            },
+            success: () => {
+                $("#dir" + n).remove();
+            }
+        });
+    });
+}
+
+function deleteFile(n) {
+    $(document).on('submit', '#f' + n, (e) => {
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url 'verifier:delete_file' 1234 %}'.replace(/1234/, n.toString()),
+            data:
+            {
+                pk: n,
+                csrfmiddlewaretoken: csrftoken
+            },
+            success: () => {
+                $("#file" + n).remove();
+            }
+        });
+    });
+}
+</script>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item dropdown">
+      <button ="dropdown-toggle" data-toggle="dropdown">
+        Project
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" id="add-dir">Add directory</button>
+        <button class="dropdown-item" id="add-file">Add file</button>
+      </div>
+    </li>
+    <li class="nav-item">
+      <button id="run_btn">Run</button>
+    </li>
+    <li class="nav-item dropdown">
+      <button class="dropdown-toggle" data-toggle="dropdown">Help</button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="https://frama-c.com">About Frama-C</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+  <main>
+    <div class="ver-project-tree">
+    <ul>
+    {% if directories %}
+    {% for dir in directories %}
+      {% include 'verifier/tree_dir_template.html' %}
+    {% endfor %}
+    {% endif %}
+    </ul>
+    </div>
+
+    <div class="ver-code">
+      <textarea placeholder="#include &quot;stdio.h&quot;
+int main() {
+    printf(&quot;Hello World!\n&quot;);
+}" spellcheck="false" autofocus>
+      </textarea>
+    </div>
+
+    <div class="ver-program-element">
+      <p>Program Focus Element</p>
+    </div>
+
+    <div class="ver-tabs">
+      <input type="radio" name="tabs" id="provers" checked>
+      <label for="provers">PROVERS</label>
+      <input type="radio" name="tabs" id="vcs">
+      <label for="vcs">VCs</label>
+      <input type="radio" name="tabs" id="result">
+      <label for="result">RESULT</label>
+
+      <div>Provers content</div>
+      <div>VCs content</div>
+      <div>Result content</div>
+    </div>
+  </main>
+
+</div>
+{% endblock content %}

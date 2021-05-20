@@ -1,0 +1,88 @@
+.light {
+  /* Light color scheme. */
+  --color: black;
+  --grid-border: #111;
+  --menu: #fff;
+  --menu-element: #f0f0f0;
+  --menu-hover: #c8c8c8;
+  --menu-el-content: #f0f0f0;
+  --menu-el-content-hover: #c8c8c8;
+  --code: #fff;
+  --code-color: black;
+  --project-tree: #fff;
+  --program-element: #fff;
+  --tabs: #fff;
+  --tab-link: #f0f0f0;
+  --tab-border: #111;
+}
+
+.dark {
+  /* Dark color scheme. */
+  --color: white;
+  --grid-border: #999;
+  --menu: #111;
+  --menu-element: #656565;
+  --menu-hover: #3c3c3c;
+  --menu-el-content: #656565;
+  --menu-el-content-hover: #3c3c3c;
+  --code: #111;
+  --code-color: white;
+  --project-tree: #111;
+  --program-element: #111;
+  --tabs: #111;
+  --tab-link: #656565;
+  --tab-border: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+main {
+  display: grid;
+  grid-template:
+    "project code program" calc(80vh - 20px)
+    "project tabs tabs" 20vh / 20vh auto 1fr;
+/*
+  grid-template:
+    "project code program" calc(80vh - 20px)
+    "project tabs tabs" 20vh / auto auto 1fr;
+*/
+}
+
+.ver-project-tree {
+  grid-area: project;
+  overflow: auto;
+  max-width: 30vw;
+/*
+  resize: horizontal;
+*/
+}
+
+.ver-code {
+  grid-area: code;
+  overflow: auto;
+  resize: horizontal;
+  max-width: 70vw;
+}
+
+.ver-code textarea {
+  resize: none;
+  width: 100%;
+  height: 100%;
+}
+
+.ver-program-element {
+  grid-area: program;
+  overflow: auto;
+}
+
+.ver-tabs {
+  grid-area: tabs;
+  overflow: auto;
+}
+
+.file {
+  color: red;
+  cursor: pointer;
+}
