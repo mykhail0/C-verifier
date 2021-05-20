@@ -9,11 +9,13 @@
   </script>
   <ul>
   {% for file in dir.file_set.all %}
-    <li class="file" id="file{{ file.pk }}">
+    <li id="li{{ file.pk }}">
       <form action="" method="post" id="f{{ file.pk }}">
         {% csrf_token %}
       </form>
-      <label for="f{{ file.pk }}">{{ file.name }}</label>
+      <label for="f{{ file.pk }}">
+        <div class="file" id="file{{ file.pk }}">{{ file.name }}</div>
+      </label>
       <input type="submit" value="del" class="btn-sm" form="f{{ file.pk }}">
       <script>
       $(document).ready(() => {

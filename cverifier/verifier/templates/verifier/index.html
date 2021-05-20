@@ -78,7 +78,7 @@ function deleteFile(n) {
                 csrfmiddlewaretoken: csrftoken
             },
             success: () => {
-                $("#file" + n).remove();
+                $("#li" + n).remove();
             }
         });
     });

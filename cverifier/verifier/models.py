@@ -21,7 +21,7 @@ class Directory(models.Model):
     creation_date = models.DateTimeField()
     availability_flag = models.BooleanField()
     def get_my_path(self):
-        return (settings.MEDIA_ROOT if self.parent is None else Directory.objects.get(pk=self.parent.pk).get_my_path()) + self.name + '/'
+        return ('' if self.parent is None else Directory.objects.get(pk=self.parent.pk).get_my_path()) + self.name + '/'
     def get_absolute_url(self):
         return reverse('verifier:index')
     def __str__(self):
@@ -64,6 +64,7 @@ class SectionCategory(models.Model):
         LEMMA = 'lemma', _('Lemma')
         ASSERTION = 'assert', _('Assert')
         INVARIANT = 'inv', _('Invariant')
+        VARIANT = 'var', _('Variant')
         PRECONITION = 'precond', _('Precondition')
         POSTCONDITION = 'postcond', _('Postcondition')
 

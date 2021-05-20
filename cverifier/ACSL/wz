@@ -1,0 +1,225 @@
+[kernel] Parsing bin_search.c (with preprocessing)
+bin_search.c:5:[kernel] warning: parsing obsolete ACSL construct '\valid_range(addr,min,max)'. '\valid(addr+(min..max))' should be used instead.
+[wp] Running WP plugin...
+[wp] warning: Missing RTE guards
+bin_search.c:23:[wp] warning: Missing assigns clause (assigns 'everything' instead)
+[wp] 10 goals scheduled
+[wp] [Qed] Goal typed_binary_search_loop_inv_established : Valid
+[wp] [Qed] Goal typed_binary_search_loop_term_decrease : Valid
+[wp] [Qed] Goal typed_binary_search_loop_term_positive : Valid
+[wp] [Alt-Ergo] Goal typed_binary_search_loop_inv_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_binary_search_assert : Valid
+[wp] [Qed] Goal typed_binary_search_loop_inv_for_failure_established : Valid
+[wp] [Alt-Ergo] Goal typed_binary_search_failure_post : Unknown (Qed:20ms) (98ms)
+[wp] [Alt-Ergo] Goal typed_binary_search_post : Unknown (Qed:21ms) (567ms)
+[wp] [Alt-Ergo] Goal typed_binary_search_success_post : Unknown (Qed:31ms) (606ms)
+[wp] [Alt-Ergo] Goal typed_binary_search_loop_inv_for_failure_preserved : Unknown (Qed:42ms) (2.7s)
+[wp] Proved goals:    6 / 10
+    Qed:             4  (0.46ms-10ms-24ms)
+    Alt-Ergo:        2  (12ms-30ms) (58) (unknown: 4)
+------------------------------------------------------------
+  Function binary_search
+------------------------------------------------------------
+
+Goal Post-condition (file bin_search.c, line 6) in 'binary_search':
+Let x = (l + u) / 2.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Assume {
+  Type: is_sint32(l) /\ is_sint32(n_1) /\ is_sint32(n) /\ is_sint32(u) /\
+      is_sint32(v) /\ is_sint32(x) /\ is_sint32(x_1).
+  (* Residual *)
+  When: l <= u.
+  (* Heap *)
+  Have: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n) /\ valid_rw(Malloc_0, shift_sint32(t_1, 0), n).
+  (* Invariant *)
+  Have: (0 <= l) /\ (u < n_1).
+  (* Assertion *)
+  Have: (x <= u) /\ (l <= x).
+  (* Else *)
+  Have: v <= x_1.
+  (* Else *)
+  Have: x_1 <= v.
+}
+Prove: (x < n) /\ ((-1) <= x).
+Prover Alt-Ergo returns Unknown (Qed:21ms) (567ms)
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file bin_search.c, line 17):
+Let x = (l_1 + u_1) / 2.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Assume {
+  Type: is_sint32(l) /\ is_sint32(l_1) /\ is_sint32(n) /\ is_sint32(n_1) /\
+      is_sint32(u) /\ is_sint32(u_1) /\ is_sint32(v) /\ is_sint32(x) /\
+      is_sint32(x_1).
+  (* Heap *)
+  Have: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t_1, 0), n_1).
+  (* Invariant *)
+  Have: (0 <= l_1) /\ (u_1 < n).
+  (* Then *)
+  Have: l_1 <= u_1.
+  (* Assertion *)
+  Have: (x <= u_1) /\ (l_1 <= x).
+  If x_1 < v
+  Then { Have: u_1 = u. Have: (1 + ((l_1 + u) / 2)) = l. }
+  Else {
+    Let x_2 = (l + u_1) / 2.
+    Have: l_1 = l.
+    (* Then *)
+    Have: v < Mint_0[shift_sint32(t, x_2)].
+    Have: x_2 = (1 + u).
+  }
+}
+Prove: (0 <= l) /\ (u < n).
+Prover Alt-Ergo returns Valid (Qed:24ms) (12ms) (31)
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file bin_search.c, line 17):
+Prove: true.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file bin_search.c, line 25):
+Let x = (l + u) / 2.
+Assume {
+  Type: is_sint32(l) /\ is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(u) /\
+      is_sint32(x).
+  (* Heap *)
+  Have: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t, 0), n_1).
+  (* Invariant *)
+  Have: (0 <= l) /\ (u < n).
+  (* Then *)
+  Have: l <= u.
+}
+Prove: (x <= u) /\ (l <= x).
+Prover Alt-Ergo returns Valid (Qed:7ms) (30ms) (58)
+
+------------------------------------------------------------
+
+Goal Decreasing of Loop variant at loop (file bin_search.c, line 23):
+Prove: true.
+Prover Qed returns Valid (23ms)
+
+------------------------------------------------------------
+
+Goal Positivity of Loop variant at loop (file bin_search.c, line 23):
+Prove: true.
+Prover Qed returns Valid (3ms)
+
+------------------------------------------------------------
+------------------------------------------------------------
+  Function binary_search with behavior failure
+------------------------------------------------------------
+
+Goal Post-condition for 'failure' (file bin_search.c, line 11) in 'binary_search':
+Assume {
+  Type: is_sint32(l) /\ is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(u) /\
+      is_sint32(v_1).
+  (* Goal *)
+  When: (0 <= i) /\ (i < n_1).
+  (* Heap *)
+  Have: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t, 0), n_1).
+  (* Pre-condition for 'failure' *)
+  Have: P_sorted(Mint_1, t, 0, n_1 - 1).
+  (* Invariant for 'failure' *)
+  Have: forall i_1 : Z. ((Mint_0[shift_sint32(t_1, i_1)] = v_1) ->
+      ((0 <= i_1) -> ((i_1 < n) -> ((i_1 <= u) /\ (l <= i_1))))).
+  (* Invariant *)
+  Have: (0 <= l) /\ (u < n).
+  Have: u < l.
+}
+Prove: Mint_0[shift_sint32(t, i)] != v.
+Prover Alt-Ergo returns Unknown (Qed:20ms) (98ms)
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant for 'failure' (file bin_search.c, line 20):
+Let x = (l_1 + u_1) / 2.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Let x_2 = Mint_0[shift_sint32(t, i)].
+Assume {
+  Type: is_sint32(l) /\ is_sint32(l_1) /\ is_sint32(n) /\ is_sint32(n_1) /\
+      is_sint32(u) /\ is_sint32(u_1) /\ is_sint32(x_2) /\ is_sint32(x) /\
+      is_sint32(x_1).
+  (* Goal *)
+  When: (0 <= i) /\ (i < n).
+  (* Heap *)
+  Have: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t_1, 0), n_1).
+  (* Pre-condition for 'failure' *)
+  Have: P_sorted(Mint_1, t_1, 0, n_1 - 1).
+  (* Invariant for 'failure' *)
+  Have: forall i_1 : Z. ((Mint_0[shift_sint32(t, i_1)] = x_2) ->
+      ((0 <= i_1) -> ((i_1 < n) -> ((i_1 <= u_1) /\ (l_1 <= i_1))))).
+  (* Invariant *)
+  Have: (0 <= l_1) /\ (u_1 < n).
+  (* Then *)
+  Have: l_1 <= u_1.
+  (* Assertion *)
+  Have: (x <= u_1) /\ (l_1 <= x).
+  If x_1 < x_2
+  Then { Have: u_1 = u. Have: (1 + ((l_1 + u) / 2)) = l. }
+  Else {
+    Let x_3 = (l + u_1) / 2.
+    Have: l_1 = l.
+    (* Then *)
+    Have: x_2 < Mint_0[shift_sint32(t, x_3)].
+    Have: x_3 = (1 + u).
+  }
+  (* Loop variant at loop *)
+  Have: (l_1 + u) < (l + u_1).
+}
+Prove: (l <= i) /\ (i <= u).
+Prover Alt-Ergo returns Unknown (Qed:42ms) (2.7s)
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant for 'failure' (file bin_search.c, line 20):
+Prove: true.
+Prover Qed returns Valid (2ms)
+
+------------------------------------------------------------
+------------------------------------------------------------
+  Function binary_search with behavior success
+------------------------------------------------------------
+
+Goal Post-condition for 'success' (file bin_search.c, line 8) in 'binary_search':
+Let x = (l + u) / 2.
+Let x_1 = Mint_0[shift_sint32(t_1, x)].
+Let x_2 = Mint_0[shift_sint32(t, x)].
+Assume {
+  Type: is_sint32(l) /\ is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(u) /\
+      is_sint32(v) /\ is_sint32(v_1) /\ is_sint32(x) /\ is_sint32(x_2) /\
+      is_sint32(x_1).
+  (* Residual *)
+  When: l <= u.
+  (* Goal *)
+  When: 0 <= x.
+  (* Heap *)
+  Have: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t, 0), n_1).
+  (* Invariant *)
+  Have: (0 <= l) /\ (u < n).
+  (* Assertion *)
+  Have: (x <= u) /\ (l <= x).
+  (* Else *)
+  Have: v_1 <= x_1.
+  (* Else *)
+  Have: x_1 <= v_1.
+}
+Prove: x_2 = v.
+Prover Alt-Ergo returns Unknown (Qed:31ms) (606ms)
+
+------------------------------------------------------------

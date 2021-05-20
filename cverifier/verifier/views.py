@@ -32,10 +32,6 @@ class DirectoryCreateView(BSModalCreateView):
         form.instance.creation_date = timezone.now()
         x = form.instance.availability_flag
         form.instance.availability_flag = True if x is None else x
-        try:
-            os.mkdir(form.instance.get_my_path())
-        except:
-            pass
         return super().form_valid(form)
 
 class FileCreateView(BSModalCreateView):
