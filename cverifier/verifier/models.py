@@ -2,19 +2,45 @@ from django.db import models
 import datetime
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.urls import reverse
 from django.conf import settings
 
+class UserManager(BaseUserManager):
+    def create_user(self, login, password=None):
+        user = self.model(login=login)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, login, password=None):
+        user = self.create_user(login, password)
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
 
 class User(AbstractBaseUser):
+    name = models.CharField(max_length=256)
     login = models.CharField(max_length=40, unique=True)
     USERNAME_FIELD = 'login'
-    name = models.CharField(max_length=256)
+    is_admin = models.BooleanField(default=False)
+    objects = UserManager()
+    
+    def __str__(self):
+        return self.login
 
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        return self.is_admin
 
 class Directory(models.Model):
-    #owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     name = models.TextField(max_length=256)
     desc = models.TextField(blank=True)
@@ -45,7 +71,7 @@ def upload_path(instance, filename):
 
 class File(WithSections):
     directory = models.ForeignKey(Directory, on_delete=models.CASCADE)
-    #owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.TextField(max_length=256)
     file_cont = models.FileField('file', upload_to=upload_path)
     desc = models.TextField(blank=True)

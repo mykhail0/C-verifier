@@ -19,6 +19,7 @@
 $(document).ready(() => {
 
     csrftoken = Cookies.get('csrftoken');
+    opened_file = '';
 
     $("#add-dir").modalForm({
         formURL: "{% url 'verifier:dirform' %}"
@@ -43,8 +44,30 @@ function loadFile(n) {
             },
             success: (data) => {
                 $('.ver-code textarea:first').html(data.filecontent);
+                opened_file = n;
             }
         });
+    });
+}
+
+function runFrama(parameters=['-wp', '-wp-print']) {
+    $(document).on('click', '#run-btn', (e) => {
+        if (opened_file) {
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:'{% url 'verifier:frama' 1234 %}'.replace(/1234/, opened_file.toString()),
+                data:
+                {
+                    pk: opened_file,
+                    params: parameters,
+                    csrfmiddlewaretoken: csrftoken
+                },
+                success: (data) => {
+                    $('.ver-program-element:first').html(data.result);
+                }
+            });
+        }
     });
 }
 
@@ -97,13 +120,19 @@ function deleteFile(n) {
       </div>
     </li>
     <li class="nav-item">
-      <button id="run_btn">Run</button>
+      <button id="run-btn">Run</button>
+      <script>
+        $(document).ready(() => {runFrama();});
+      </script>
     </li>
     <li class="nav-item dropdown">
       <button class="dropdown-toggle" data-toggle="dropdown">Help</button>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="https://frama-c.com">About Frama-C</a>
       </div>
+    </li>
+    <li class="nav-item">
+        <button onclick="location.href='/verifier/logout'">Log out</button>
     </li>
   </ul>
 </nav>
@@ -127,21 +156,61 @@ int main() {
       </textarea>
     </div>
 
-    <div class="ver-program-element">
-      <p>Program Focus Element</p>
-    </div>
+    <div class="ver-program-element"></div>
 
     <div class="ver-tabs">
-      <input type="radio" name="tabs" id="provers" checked>
-      <label for="provers">PROVERS</label>
-      <input type="radio" name="tabs" id="vcs">
-      <label for="vcs">VCs</label>
-      <input type="radio" name="tabs" id="result">
-      <label for="result">RESULT</label>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#provers">Provers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#vcs">VCs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#result">Result</a>
+        </li>
+      </ul>
 
-      <div>Provers content</div>
-      <div>VCs content</div>
-      <div>Result content</div>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div id="provers" class="container tab-pane active"><br>
+            <form action="" method="post" id="prover-form">{% csrf_token %}
+              <p>Please select the prover:</p>
+              <input type="radio" id="alt-ergo" name="prover" value="alt-ergo">
+              <label for="alt-ergo">Alt-Ergo</label><br>
+              <input type="radio" id="z3" name="prover" value="z3">
+              <label for="z3">Z3</label><br>
+              <input type="radio" id="cvc4" name="prover" value="cvc4">
+              <label for="cvc4">CVC4</label>
+              <input type="submit" value="Prove">
+              <script>
+                /* $(document).ready(() => {runFrama();}); */
+              </script>
+            </form>
+
+
+      <form action="" method="post" id="f{{ file.pk }}">
+        {% csrf_token %}
+      </form>
+      <label for="f{{ file.pk }}">
+        <div class="file" id="file{{ file.pk }}">{{ file.name }}</div>
+      </label>
+      <input type="submit" value="del" class="btn-sm" form="f{{ file.pk }}">
+      <script>
+      $(document).ready(() => {
+        loadFile({{ file.pk }});
+        deleteFile({{ file.pk }});
+      });
+      </script>
+
+
+        </div>
+        <div id="vcs" class="container tab-pane fade"><br>
+        </div>
+        <div id="result" class="container tab-pane fade"><br>
+        </div>
+      </div>
+
     </div>
   </main>
 
