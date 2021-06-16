@@ -29,9 +29,8 @@ $(document).ready(() => {
         formURL: "{% url 'verifier:fileform' %}"
     });
 
-    var myCodeMirror = CodeMirror.fromTextArea(document.getElementsByTagName('textarea')[0], {
-        value: "void print();",
-        mode:  "clike"
+    editor = CodeMirror.fromTextArea(document.getElementsByTagName('textarea')[0], {
+        mode: "clike"
     });
 
 });
@@ -48,7 +47,10 @@ function loadFile(n) {
                 csrfmiddlewaretoken: csrftoken
             },
             success: (data) => {
-                $('.ver-code textarea:first').html(data.filecontent);
+                // $('.ver-code textarea:first').html(data.filecontent);
+                // console.log(typeof data.filecontent);
+                // console.log(data.filecontent);
+                editor.getDoc().setValue(data.filecontent);
                 opened_file = n;
             }
         });
@@ -154,10 +156,10 @@ function deleteFile(n) {
     </div>
 
     <div class="ver-code">
-      <textarea placeholder="#include &quot;stdio.h&quot;
+      <textarea spellcheck="false" autofocus>
+      #include &quot;stdio.h&quot;
 int main() {
     printf(&quot;Hello World!\n&quot;);
-}" spellcheck="false" autofocus>
       </textarea>
     </div>
 

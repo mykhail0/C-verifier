@@ -81,7 +81,7 @@ def code(request, pk):
         if file_obj != None:
             try:
                 with file_obj.file_cont.open('r') as f:
-                    data['filecontent'] = f.readlines()
+                    data['filecontent'] = f.read()
             except:
                 pass
     return JsonResponse(data)
