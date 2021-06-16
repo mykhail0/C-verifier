@@ -29,6 +29,11 @@ $(document).ready(() => {
         formURL: "{% url 'verifier:fileform' %}"
     });
 
+    var myCodeMirror = CodeMirror.fromTextArea(document.getElementsByTagName('textarea')[0], {
+        value: "void print();",
+        mode:  "clike"
+    });
+
 });
 
 function loadFile(n) {
